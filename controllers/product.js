@@ -37,7 +37,7 @@ module.exports.createProductImage = (req, res) => {
     // If file was uploaded successfully, send success response
     res.status(201).json({
         message: "The product image is posted successfully",
-        image_url: `${process.env.LINK}/images/${req.file.filename}`
+        image_url: `${process.env.BASE_URL}/images/${req.file.filename}`
     });
   });
 };

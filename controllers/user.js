@@ -41,7 +41,7 @@ module.exports.createUserImage = (req, res) => {
     // If file was uploaded successfully, send success response
     res.status(201).json({
         message: "The user image is posted successfully",
-        image_url: `${process.env.LINK}/profiles/${req.file.filename}`
+        image_url: `${process.env.BASE_URL}/profiles/${req.file.filename}`
     });
   });
 };

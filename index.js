@@ -56,11 +56,11 @@ mongoose.connection.once("open", () =>
 
 // Backend Routes
 // Defines the "/users" string to be included for all user routes defined in the "user" route file
-app.use("/", (req,res) => {
-  return res.json({
-    message:"Welcome to Node.Js REST API using ExpressJS and MongoDB"
-  })
-} )
+// app.use("/", (req,res) => {
+//   // return res.json({
+//   //   message:"Welcome to Node.Js REST API using ExpressJS and MongoDB"
+//   // })
+// } )
 
 app.use('/images', express.static('/shop/products/images'));
 app.use('/profiles', express.static('/shop/users/profiles'));
