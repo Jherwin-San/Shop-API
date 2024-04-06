@@ -46,7 +46,7 @@ app.use(cors());
 
 // Connect to MongoDB database
 mongoose.connect(
-  "mongodb+srv://admin:admin123@cluster0.zdtorcx.mongodb.net/Online-Shop-API?retryWrites=true&w=majority",
+  process.env.MONGO_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
