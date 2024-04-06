@@ -46,11 +46,7 @@ app.use(cors());
 
 // Connect to MongoDB database
 mongoose.connect(
-  process.env.MONGO_URI,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
+  process.env.MONGO_URI
 );
 
 // Prompts a message in the terminal once the connection is "open" and we are able to successfully connect to our database
@@ -60,6 +56,12 @@ mongoose.connection.once("open", () =>
 
 // Backend Routes
 // Defines the "/users" string to be included for all user routes defined in the "user" route file
+app.use("/", (req,res) => {
+  return res.json({
+    message:"Welcome to Node.Js REST API using ExpressJS and MongoDB"
+  })
+} )
+
 app.use('/images', express.static('/shop/products/images'));
 app.use('/profiles', express.static('/shop/users/profiles'));
 
