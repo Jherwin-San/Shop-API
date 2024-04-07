@@ -46,7 +46,7 @@ app.use(cors());
 
 // Connect to MongoDB database
 mongoose.connect(
-  process.env.MONGO_URI
+  `${process.env.MONGO_URI}`
 );
 
 // Prompts a message in the terminal once the connection is "open" and we are able to successfully connect to our database
