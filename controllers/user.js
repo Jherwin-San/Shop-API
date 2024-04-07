@@ -5,6 +5,7 @@ const User = require("../models/User.js");
 const auth = require("../authentication/auth.js");
 const nodemailer = require('nodemailer');
 const emailService = require('../services/emailService');
+const cloudinary = require("../services/cloudinary.js")
 const multer = require("multer");
 const path = require('path');
 

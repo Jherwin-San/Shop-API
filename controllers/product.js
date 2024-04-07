@@ -72,11 +72,18 @@ module.exports.createProduct = async (req, res) => {
     if (existingProduct) {
       return res.status(400).json({ error: "Product already exists" });
     }
-
+    const result = await cloudinary.uploader.upload(image, {
+      folder: "products",
+      // width: 300,
+      // crop: "scale"
+  })
     // Create a new product
     let newProduct = new Product({
       name: name,
-      image:image,
+      image:{
+        public_id: result.public_id,
+        url: result.secure_url
+    },
       category:category,
       description: description,
       price: price,
