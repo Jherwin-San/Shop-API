@@ -1,43 +1,35 @@
 // [SECTION] Dependencies and Modules
 // The "Product" variable is defined using a capitalized letter to indicate that what we are using is the "Product" model for code readability
 const Product = require("../models/Product.js");
-const multer = require("multer");
-const path = require('path');
+const cloudinary = require("../services/cloudinary.js");
+const upload = require("../services/multer.js");
 
-//[SECTION] Product Image Destination
-const storage = multer.diskStorage({
-  destination: "./uploads/images",
-  filename: (req, file, cb) => {
-      cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
-  }
-});
 
-const upload = multer({ storage: storage });
-
+// Product Image
 module.exports.createProductImage = (req, res) => {
   upload.single('product-image')(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
+    if (err) {
+      console.log(err);
       return res.status(500).json({
-          error: 'Error uploading product image'
-      });
-    } else if (err) {
-      // An unknown error occurred when uploading.
-      return res.status(500).json({
-          error: 'Unknown error uploading product image'
+        success: false,
+        message: "Error"
       });
     }
+    
+    cloudinary.uploader.upload(req.file.path, {folder: "products",}, function (err, result) {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          message: "Error"
+        });
+      }
 
-    if (!req.file) {
-      // If no file was uploaded, send an error response
-      return res.status(400).json({
-          error: 'Product image not uploaded'
+      res.status(200).json({
+        success: true,
+        message: "Uploaded!",
+        data: result.secure_url
       });
-    }
-    // If file was uploaded successfully, send success response
-    res.status(201).json({
-        message: "The product image is posted successfully",
-        image_url: `${process.env.BASE_URL}/images/${req.file.filename}`
     });
   });
 };
@@ -47,6 +39,7 @@ module.exports.createProductImage = (req, res) => {
 module.exports.createProduct = async (req, res) => {
   try {
     const { name, image, category, description, price, stock } = req.body;
+   
     if (!image) {
       image = `https://placehold.co/600x400?text=${name}`;
    }
@@ -72,18 +65,11 @@ module.exports.createProduct = async (req, res) => {
     if (existingProduct) {
       return res.status(400).json({ error: "Product already exists" });
     }
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "products",
-      // width: 300,
-      // crop: "scale"
-  })
+
     // Create a new product
     let newProduct = new Product({
       name: name,
-      image:{
-        public_id: result.public_id,
-        url: result.secure_url
-    },
+      image:image,
       category:category,
       description: description,
       price: price,

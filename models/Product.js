@@ -6,14 +6,8 @@ const productSchema = new mongoose.Schema({
     required: [true, "Name is Required"],
   },
   image: {
-    public_id: {
-      type: String,
-      required: true
-  },
-  url: {
-      type: String,
-      required: true
-  }
+    type: String,
+    required: [true, "Image file is Required"],
   },
   category: {
     type: String,

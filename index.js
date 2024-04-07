@@ -55,17 +55,12 @@ mongoose.connection.once("open", () =>
 );
 
 // Backend Routes
-// Defines the "/users" string to be included for all user routes defined in the "user" route file
-// app.use("/", (req,res) => {
-//   // return res.json({
-//   //   message:"Welcome to Node.Js REST API using ExpressJS and MongoDB"
-//   // })
-// } )
+app.use("/", (req,res) => {
+  return res.json({
+    message:"Welcome to Jher's Node.js REST API using ExpressJS and MongoDB"
+  })
+} )
 
-app.use('/images', express.static('/shop/products/images'));
-app.use('/profiles', express.static('/shop/users/profiles'));
-
-//Groups all routes in userRoutes under "/users"
 app.use("/shop/users", userRoutes);
 app.use("/shop/products", productRoutes);
 app.use("/shop/carts", cartRoutes);

@@ -5,44 +5,34 @@ const User = require("../models/User.js");
 const auth = require("../authentication/auth.js");
 const nodemailer = require('nodemailer');
 const emailService = require('../services/emailService');
-const cloudinary = require("../services/cloudinary.js")
-const multer = require("multer");
-const path = require('path');
+const cloudinary = require("../services/cloudinary.js");
+const upload = require("../services/multer.js");
 
-//[SECTION] Product Image Destination
-const storage = multer.diskStorage({
-  destination: "./uploads/profiles",
-  filename: (req, file, cb) => {
-      cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
-  }
-});
-
-const upload = multer({ storage: storage });
-
+//[SECTION] Uaer Image Destination
 module.exports.createUserImage = (req, res) => {
   upload.single('user-image')(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
+    if (err) {
+      console.log(err);
       return res.status(500).json({
-          error: 'Error uploading user image'
-      });
-    } else if (err) {
-      // An unknown error occurred when uploading.
-      return res.status(500).json({
-          error: 'Unknown error uploading user image'
+        success: false,
+        message: "Error"
       });
     }
+    
+    cloudinary.uploader.upload(req.file.path, {folder: "profiles",}, function (err, result) {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          message: "Error"
+        });
+      }
 
-    if (!req.file) {
-      // If no file was uploaded, send an error response
-      return res.status(400).json({
-          error: 'User image not uploaded'
+      res.status(200).json({
+        success: true,
+        message: "Uploaded!",
+        data: result.secure_url
       });
-    }
-    // If file was uploaded successfully, send success response
-    res.status(201).json({
-        message: "The user image is posted successfully",
-        image_url: `${process.env.BASE_URL}/profiles/${req.file.filename}`
     });
   });
 };
