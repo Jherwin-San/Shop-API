@@ -56,9 +56,9 @@ mongoose.connection.once("open", () =>
 
 // Backend Routes
 app.use("/", (req,res) => {
-  return res.json({
-    message:"Welcome to Jher's Node.js REST API using ExpressJS and MongoDB"
-  })
+  // return res.json({
+  //   message:"Welcome to Jher's Node.js REST API using ExpressJS and MongoDB"
+  // })
 } )
 
 app.use("/shop/users", userRoutes);
