@@ -38,7 +38,7 @@ module.exports.createProductImage = (req, res) => {
 //[SECTION] Product Creation
 module.exports.createProduct = async (req, res) => {
   try {
-    const { name, image, category, description, price, stock } = req.body;
+    const { name, image, trailer, directedBy, releaseDate, country, cast, category, description, price, stock } = req.body;
    
     if (!image) {
       image = `https://placehold.co/600x400?text=${name}`;
@@ -70,6 +70,11 @@ module.exports.createProduct = async (req, res) => {
     let newProduct = new Product({
       name: name,
       image:image,
+      trailer:trailer,
+      directedBy: directedBy, 
+      releaseDate: releaseDate, 
+      country:country, 
+      cast:cast,
       category:category,
       description: description,
       price: price,
@@ -202,7 +207,7 @@ module.exports.updateProduct = async (req, res) => {
   }
 
   try {
-    const { name, image, category, description, price, stock } = req.body;
+    const { name, image, trailer,directedBy, releaseDate, country, cast, category, description, price, stock } = req.body;
 
     // Check if at least one field among name, description, price, and stock is updated
     if (!name && !image && !category && !description && !price && !stock) {
@@ -213,6 +218,11 @@ module.exports.updateProduct = async (req, res) => {
     const updatedProduct = {};
     if (name) updatedProduct.name = name;
     if (image) updatedProduct.image = image;
+    if (trailer) updatedProduct.trailer =trailer;
+    if (directedBy) updatedProduct.directedBy = directedBy;
+    if (releaseDate) updatedProduct.releaseDate = releaseDate;
+    if (country) updatedProduct.country = country;
+    if (cast) updatedProduct.cast = cast;
     if (category) updatedProduct.category = category;
     if (description) updatedProduct.description = description;
     if (price) updatedProduct.price = price;

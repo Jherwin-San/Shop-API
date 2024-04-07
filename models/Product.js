@@ -9,6 +9,26 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Image file is Required"],
   },
+  trailer: {
+    type: String,
+    required: [true, "Trailer is Required"],
+  },
+  directedBy: {
+    type: String,
+    required: [true, "Cast is Required"],
+  },
+  releaseDate: {
+    type: String,
+    required: [true, "Cast is Required"],
+  },
+  country: {
+    type: String,
+    required: [true, "Country is Required"],
+  },
+  cast: {
+    type: [String],
+    required: [true, "Cast is Required"],
+  },
   category: {
     type: String,
     required: [true, "Category is Required"],
