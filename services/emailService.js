@@ -6,8 +6,8 @@ const transporter = nodemailer.createTransport({
   port: 587, // Your SMTP server port
   secure: false, // Set to true if your SMTP server requires TLS
   auth: {
-    user: 'gensnider@gmail.com', // Your SMTP username
-    pass: "whjf epok wzls gxqp"
+    user: `${process.env.STMP_EMAIL}`, // Your SMTP username
+    pass: `${process.env.STMP_PASSWORD}`
     // 'BlueAqua08' // Your SMTP password
   }
 });

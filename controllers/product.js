@@ -47,9 +47,11 @@ module.exports.createProductImage = (req, res) => {
 module.exports.createProduct = async (req, res) => {
   try {
     const { name, image, category, description, price, stock } = req.body;
-
+    if (!image) {
+      image = `https://placehold.co/600x400?text=${name}`;
+   }
     // Check if required fields are present
-    if (!name || !image || !category || !description || !price || !stock) {
+    if (!name || !category || !description || !price || !stock) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
