@@ -79,6 +79,7 @@ module.exports.addToCart = async (req, res) => {
         productId,
         productName: product.name,
         productImage: product.image,
+        price: product.price,
         quantity,
         subtotal,
       });

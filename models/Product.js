@@ -45,6 +45,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Inventory stock is Required"],
   },
+  isPopular: {
+    type: Boolean,
+    default: false,
+  },
+  isNew: {
+    type: Boolean,
+    default: true,
+  },
   isActive: {
     type: Boolean,
     default: true,

@@ -20,6 +20,12 @@ router.get("/all", productController.getAllProducts);
 // GET /products/active - Get all active products
 router.get("/active", productController.getAllActive);
 
+// GET /products/popular - Get all popular products
+router.get("/popular", productController.getAllPopular);
+
+// GET /products/new - Get all new products
+router.get("/new", productController.getAllNew);
+
 // GET /products/:productId - Get a product by ID
 router.get("/:productId", productController.getProduct);
 
@@ -30,6 +36,12 @@ router.put("/:productId", verify, verifyAdmin, productController.updateProduct);
 
 // PATCH /products/archive/:productId - Archive a product by ID
 router.patch("/archive/:productId", verify, verifyAdmin, productController.archivedProduct);
+
+// PATCH /products/setpopular/:productId - Update a product status by ID
+router.patch("/setpopular/:productId", verify, verifyAdmin, productController.setPopularProduct);
+
+// PATCH /products/setnew/:productId - Update a product status by ID
+router.patch("/setnew/:productId", verify, verifyAdmin, productController.setNewProduct);
 
 // PATCH /products/activate/:productId - Activate a product by ID
 router.patch("/activate/:productId", verify, verifyAdmin, productController.activateProduct);

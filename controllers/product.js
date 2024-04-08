@@ -122,8 +122,6 @@ module.exports.getAllProducts = (req, res) => {
     });
 };
 
-
-
 // [SECTION] Get all active products
 module.exports.getAllActive = (req, res) => {
   try {
@@ -146,6 +144,66 @@ module.exports.getAllActive = (req, res) => {
         return res
           .status(500)
           .json({ error: "Error in finding active products." });
+      });
+  } catch (error) {
+    // Catch any synchronous errors that occur outside of the promise chain
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// [SECTION] Get all active products
+module.exports.getAllPopular = (req, res) => {
+  try {
+    // Use try-catch block to handle potential errors
+    return Product.find({ isPopular: true }) // Find all products with isActive set to true
+      .then((products) => {
+        // If products are found, return the products with a success status code
+        if (products.length > 0) {
+          return res.status(200).json({ products });
+        } else {
+          // If no active products are found, return a message with a success status code
+          return res
+            .status(200)
+            .json({ message: "There are no popular products at the moment." });
+        }
+      })
+      .catch((err) => {
+        // Handle any errors that occur during the database query
+        console.error("Error in finding popular products: ", err);
+        return res
+          .status(500)
+          .json({ error: "Error in finding popular products." });
+      });
+  } catch (error) {
+    // Catch any synchronous errors that occur outside of the promise chain
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// [SECTION] Get all new products
+module.exports.getAllNew = (req, res) => {
+  try {
+    // Use try-catch block to handle potential errors
+    return Product.find({ isNew: true }) // Find all products with isActive set to true
+      .then((products) => {
+        // If products are found, return the products with a success status code
+        if (products.length > 0) {
+          return res.status(200).json({ products });
+        } else {
+          // If no active products are found, return a message with a success status code
+          return res
+            .status(200)
+            .json({ message: "There are no new products at the moment." });
+        }
+      })
+      .catch((err) => {
+        // Handle any errors that occur during the database query
+        console.error("Error in finding new products: ", err);
+        return res
+          .status(500)
+          .json({ error: "Error in finding new products." });
       });
   } catch (error) {
     // Catch any synchronous errors that occur outside of the promise chain
@@ -323,7 +381,87 @@ module.exports.activateProduct = async (req, res) => {
   }
 };
 
+//[SECTION] Update a new single product status via params
+module.exports.setNewProduct = async (req, res) => {
+  try {
+    // Find the product by its ID
+    const product = await Product.findById(req.params.productId);
+    
+    // Check if the product exists
+    if (!product) {
+      return res.status(404).send({ message: "The product does not exist." });
+    }
+    
+    if (product.isNew === true) {
+      const updatedProduct = await Product.findByIdAndUpdate(
+        req.params.productId,
+        { isNew: false },
+        { new: true }
+      );
+      
+    return res.status(200).send({
+      name: updatedProduct.name,
+      message: "Product is already new, status modified to old",
+      Product: updatedProduct,
+    });
+    } else{
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.productId,
+      { isNew: true },
+      { new: true }
+    );
+     return res.status(200).send({
+      name: updatedProduct.name,
+      message: "Product status set as new successfully",
+      Product: updatedProduct,
+    });
+    }
+  } catch (err) {
+    console.error("Error in updating a product: ", err);
+    return res.status(500).send({ error: "Failed to update the product." });
+  }
+};
 
+//[SECTION] Update a Popular single product status via params
+module.exports.setPopularProduct = async (req, res) => {
+  try {
+    // Find the product by its ID
+    const product = await Product.findById(req.params.productId);
+    
+    // Check if the product exists
+    if (!product) {
+      return res.status(404).send({ message: "The product does not exist." });
+    }
+    
+    if (product.isPopular === true) {
+      const updatedProduct = await Product.findByIdAndUpdate(
+        req.params.productId,
+        { isPopular: false },
+        { new: true }
+      );
+      
+    return res.status(200).send({
+      name: updatedProduct.name,
+      message: "Product is already Popular, status modified to old",
+      Product: updatedProduct,
+    });
+    } else{
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.productId,
+      { isPopular: true },
+      { new: true }
+    );
+     return res.status(200).send({
+      name: updatedProduct.name,
+      message: "Product status set as Popular successfully",
+      Product: updatedProduct,
+    });
+    }
+  } catch (err) {
+    console.error("Error in updating a product: ", err);
+    return res.status(500).send({ error: "Failed to update the product." });
+  }
+};
 
 //[SECTION] Search a single item in the list via body( productName)
 module.exports.searchByName = async (req, res) => {
