@@ -295,16 +295,17 @@ module.exports.updateUserAccess = async (req, res) => {
         { isAdmin: false },
         { new: true }
       );
-      updated = await updatedAccess.save();
-      return res.status(400).send("User is already an admin - reverted to user");
+      const updated = await updatedAccess.save();
+      return res.status(400).send({ message:"User is already an admin - reverted to user", updated: updated});
     }
     const updatedAccess = await User.findByIdAndUpdate(
       userId,
       { isAdmin: true },
       { new: true }
     );
-    updated = await updatedAccess.save();
-    return res.status(200).send("User updated as admin successfully");
+    const updated = await updatedAccess.save();
+    return res.status(200).send({ message:"User updated as admin successfully",
+    updated: updated });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal Server Error");
