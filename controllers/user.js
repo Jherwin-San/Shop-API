@@ -285,17 +285,25 @@ module.exports.updateUserAccess = async (req, res) => {
     }
 
     // Check if the user is already an admin
-    if (userToUpdate.isAdmin == true) {
-      userToUpdate.isAdmin = false;
+    if (userToUpdate.isAdmin) {
+      // userToUpdate.isAdmin = false;
 
-      updated = await userToUpdate.save();
-      return res.status(200).send("User is already an admin - reverted to user");
+      // updated = await userToUpdate.save();
+
+      const updatedAccess = await User.findByIdAndUpdate(
+        userId,
+        { isAdmin: false },
+        { new: true }
+      );
+      updated = await updatedAccess.save();
+      return res.status(400).send("User is already an admin - reverted to user");
     }
-
-    userToUpdate.isAdmin = true;
-
-    updated = await userToUpdate.save();
-
+    const updatedAccess = await User.findByIdAndUpdate(
+      userId,
+      { isAdmin: true },
+      { new: true }
+    );
+    updated = await updatedAccess.save();
     return res.status(200).send("User updated as admin successfully");
   } catch (error) {
     console.error(error);
