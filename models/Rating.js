@@ -6,6 +6,10 @@ const ratingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
 },
+profile: {
+  type: String,
+  required: [true, "Profile is Required"],
+},
   userName: {
     type: String,
     required: [true, "User is Required"],

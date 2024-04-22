@@ -11,11 +11,12 @@ module.exports.createRating = async (req, res) => {
         if (!user) {
           return res.status(404).json({ error: "User not found" });
         }
-        const { firstName, lastName} = user;
+        const { firstName, lastName, profile} = user;
         // Create a new rating
         const newRating = new Rating({
             userId: userId,
             userName: firstName + " " + lastName,
+            profile:profile,
             productId: productId,
             ratingValue: ratingValue,
             comments: comments
